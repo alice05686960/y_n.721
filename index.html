@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>임진왜란 초기 사료 인물 관계도</title>
+    <!-- 가장 안정적인 CDN을 사용하여 네트워크 라이브러리 로드 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js"></script>
+    <style>
+        body { font-family: 'Malgun Gothic', 'Apple SD Gothic Neo', sans-serif; margin: 0; padding: 20px; background-color: #f4f4f9; }
+        h2 { text-align: center; color: #333; margin-bottom: 5px; }
+        p { text-align: center; color: #555; margin-bottom: 20px; font-size: 14px; }
+        #network { 
+            width: 100%; 
+            height: 80vh; 
+            border: 1px solid #ccc; 
+            background-color: #fff; 
+            border-radius: 8px; 
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1); 
+        }
+    </style>
+</head>
+<body>
+    <h2>🛡️ 임진왜란 초기 사료: 인물 및 세력 관계도</h2>
+    <p>마우스로 빈 배경을 잡고 움직이거나 노드를 드래그해 보세요. 휠을 돌리면 확대/축소가 가능합니다.</p>
+    <div id="network"></div>
+    <script>
+        // 자바스크립트 문법 오류(줄바꿈 등)를 원천 차단하기 위해 단일 줄 문자열 사용
+        var nodes = new vis.DataSet([
+            { id: 1, label: "평수길(관백)", color: {background: "#ff9999", border: "#cc0000"}, shape: "box", font: {size: 18, bold: true} },
+            { id: 2, label: "전 관백", color: {background: "#ffb3b3", border: "#cc0000"}, shape: "box" },
+            { id: 3, label: "현소(승려)", color: {background: "#ffb3b3", border: "#cc0000"}, shape: "box" },
+            { id: 4, label: "평행장 등(왜장)", color: {background: "#ffb3b3", border: "#cc0000"}, shape: "box" },
+            { id: 5, label: "왜군", color: {background: "#ff4d4d", border: "#990000"}, shape: "ellipse", font: {size: 18, bold: true} },
+            { id: 6, label: "적의 두목(백마)", color: {background: "#ffb3b3", border: "#cc0000"}, shape: "box" },
+            
+            { id: 7, label: "조선", color: {background: "#e2e2e2", border: "#999999"}, shape: "database", font: {size: 20, bold: true} },
+            
+            { id: 8, label: "정발(부산첨사)", color: {background: "#99ccff", border: "#0066cc"}, shape: "box" },
+            { id: 9, label: "송상현(동래부사)", color: {background: "#99ccff", border: "#0066cc"}, shape: "box" },
+            { id: 10, label: "송상현의 첩", color: {background: "#99ccff", border: "#0066cc"}, shape: "box" },
+            { id: 11, label: "이각(병사)", color: {background: "#cce5ff", border: "#0066cc"}, shape: "box" },
+            { id: 12, label: "박진(밀양부사)", color: {background: "#99ccff", border: "#0066cc"}, shape: "box" },
+            { id: 13, label: "김성일(우병사)", color: {background: "#99ccff", border: "#0066cc"}, shape: "box", font: {bold: true} },
+            { id: 14, label: "이종인(아장)", color: {background: "#99ccff", border: "#0066cc"}, shape: "box" }
+        ]);
+
+        var edges = new vis.DataSet([
+            { from: 1, to: 2, label: "주종/시해", arrows: "to" },
+            { from: 1, to: 3, label: "파견", arrows: "to" },
+            { from: 3, to: 7, label: "정명가도 요구", arrows: "to", color: {color: "#cc0000"} },
+            { from: 4, to: 7, label: "대대적 침략", arrows: "to", color: {color: "#cc0000"}, width: 2 },
+            { from: 5, to: 8, label: "격파(전사)", arrows: "to" },
+            { from: 5, to: 9, label: "성 함락(전사)", arrows: "to" },
+            { from: 9, to: 10, label: "순절", arrows: "to", dashes: true },
+            { from: 5, to: 11, label: "진격(도주)", arrows: "to" },
+            { from: 12, to: 5, label: "진주 항전", arrows: "to", color: {color: "#0066cc"}, width: 2 },
+            { from: 13, to: 5, label: "진주 항전", arrows: "to", color: {color: "#0066cc"}, width: 2 },
+            { from: 13, to: 14, label: "사살 지시", arrows: "to" },
+            { from: 14, to: 6, label: "화살 사살", arrows: "to", color: {color: "#0066cc"}, width: 2 }
+        ]);
+
+        var container = document.getElementById("network");
+        var data = { nodes: nodes, edges: edges };
+        var options = {
+            physics: {
+                forceAtlas2Based: {
+                    gravitationalConstant: -80,
+                    centralGravity: 0.005,
+                    springLength: 200,
+                    springConstant: 0.05
+                },
+                maxVelocity: 50,
+                solver: "forceAtlas2Based",
+                timestep: 0.35,
+                stabilization: { iterations: 150 }
+            },
+            edges: {
+                font: { size: 12, align: "middle", background: "rgba(255,255,255,0.8)" },
+                smooth: { type: "continuous" }
+            }
+        };
+        
+        var network = new vis.Network(container, data, options);
+    </script>
+</body>
+</html>
